@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 // dynamic import 3D (Hero uses @react-three/fiber)
 const Footer = () => (
   <footer className="w-full py-10 text-center text-sm text-gray-400">
-    © {new Date().getFullYear()} Your Name · Built with ❤️
+    © {new Date().getFullYear()} Kelvin Maina · Built with ❤️
   </footer>
 );
 
