@@ -1,111 +1,204 @@
 "use client";
-import { Canvas } from "@react-three/fiber";
-import { Float, OrbitControls, Environment } from "@react-three/drei";
-import { motion } from "framer-motion";
-import { useRef } from "react";
-import useMagnet from "@/hooks/useMagnet";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import Link from "next/link";
+import Image from "next/image";
 
-// function Shapes() {
-//   return (
-//     <group>
-//       <Float floatIntensity={0.8} rotationIntensity={0.02}>
-//         <mesh position={[-1.4, 0.4, 0]} scale={[0.9, 0.9, 0.9]}>
-//           <icosahedronGeometry args={[0.8, 0]} />
-//           <meshStandardMaterial
-//             roughness={0.2}
-//             metalness={0.6}
-//             color="#7c3aed"
-//             transparent
-//             opacity={0.95}
-//           />
-//         </mesh>
-//       </Float>
+const ROLES = ["Enterprise Architect", "Systems Engineer", "AI Automation Lead", "Co-Founder"];
+const ITEMS = ["Python","Django","Next.js","React","TypeScript","PostgreSQL","Redis","Docker","Jenkins","Azure","RPA","AI/OCR","Linux","GitHub Actions"];
 
-//       <Float floatIntensity={1.2} rotationIntensity={0.02}>
-//         <mesh position={[1.6, -0.2, -0.4]} scale={[1.2, 1.2, 1.2]}>
-//           <sphereGeometry args={[0.7, 32, 32]} />
-//           <meshStandardMaterial
-//             roughness={0.15}
-//             metalness={0.9}
-//             color="#ec4899"
-//             opacity={0.95}
-//             transparent
-//           />
-//         </mesh>
-//       </Float>
+function TypedRole() {
+  const [roleIdx, setRoleIdx] = useState(0);
+  const [displayed, setDisplayed] = useState("");
+  const [phase, setPhase] = useState<"typing"|"pause"|"deleting">("typing");
 
-//       <Float floatIntensity={0.6}>
-//         <mesh position={[0, -1.1, -0.6]} scale={[1.6, 0.25, 1.6]}>
-//           <boxGeometry args={[1.6, 0.25, 1.6]} />
-//           <meshStandardMaterial
-//             roughness={0.6}
-//             metalness={0.2}
-//             color="#06b6d4"
-//             opacity={0.95}
-//             transparent
-//           />
-//         </mesh>
-//       </Float>
-//     </group>
-//   );
-// }
+  useEffect(() => {
+    const current = ROLES[roleIdx];
+    let timeout: ReturnType<typeof setTimeout>;
 
-export default function Hero() {
-  const titleRef = useRef<HTMLDivElement>(null!);
-  useMagnet(titleRef); // magnetic effect for CTA
+    if (phase === "typing") {
+      if (displayed.length < current.length) {
+        timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 65);
+      } else {
+        timeout = setTimeout(() => setPhase("pause"), 1800);
+      }
+    } else if (phase === "pause") {
+      timeout = setTimeout(() => setPhase("deleting"), 400);
+    } else {
+      if (displayed.length > 0) {
+        timeout = setTimeout(() => setDisplayed(d => d.slice(0, -1)), 35);
+      } else {
+        setRoleIdx(i => (i + 1) % ROLES.length);
+        setPhase("typing");
+      }
+    }
+    return () => clearTimeout(timeout);
+  }, [displayed, phase, roleIdx]);
 
   return (
-    <section className="h-screen relative overflow-hidden">
-      {/* 3D Background */}
-      {/* <Canvas style={{ position: "absolute", inset: 0, zIndex: 0 }} camera={{ position: [0, 0, 6], fov: 55 }}>
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[2, 5, 5]} intensity={0.6} />
-        <Environment preset="city" />
-        <Shapes />
-        <OrbitControls enableZoom={false} enableRotate={false} />
-      </Canvas> */}
+    <span className="text-[var(--acid)]">
+      {displayed}
+      <span className="blink">_</span>
+    </span>
+  );
+}
 
-      {/* Glow Overlay behind text */}
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-3xl" />
+export default function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start","end start"] });
+  const y = useTransform(scrollYProgress, [0,1], ["0%","18%"]);
+  const opacity = useTransform(scrollYProgress, [0,0.7], [1,0]);
+
+  return (
+    <section
+      ref={ref}
+      className="relative min-h-screen pt-16 overflow-hidden flex flex-col border-b border-[var(--border)]"
+      aria-label="Hero"
+    >
+      {/* Dot grid background */}
+      <div className="absolute inset-0 dot-grid opacity-60" aria-hidden="true" />
+
+      {/* Gradient orb */}
+      {/* <div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, var(--acid-dim) 0%, transparent 70%)" }}
+        aria-hidden="true"
+      /> */}
+
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none">
+      <Image
+          src="/me.png"
+          alt="Gradient Orb"
+          // layout="fill"
+          objectFit="cover"
+          className="rounded-full"
+          width={1800}
+          height={1800}
+        />
       </div>
 
-      <div className="relative z-20 h-full flex flex-col items-center justify-center px-6 text-center">
-        <motion.h1
-  initial={{ opacity: 0, y: 40 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.9, delay: 0.2 }}
-  className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight max-w-3xl bg-clip-text text-transparent bg-gradient-to-r from-purple-300 via-pink-400 to-cyan-300"
->
-  Enterprise Software <br />
-  Engineer & Cofounder
-</motion.h1>
+      {/* Scanline */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="scanline" />
+      </div>
 
+      {/* Main content */}
+      <motion.div
+        style={{ y, opacity }}
+        className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-0 items-center"
+      >
+        <div className="px-6 md:px-12 py-20 lg:py-0 flex flex-col justify-center min-h-[calc(100vh-11rem)]">
+          {/* Status pill */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="flex items-center gap-2 mb-8 w-fit"
+          >
+            {/* <span className="w-1.5 h-1.5 rounded-full bg-[var(--acid)] animate-pulse shadow-[0_0_6px_var(--acid)]" /> */}
+            {/* <span className="font-[family-name:var(--font-mono)] text-[0.6rem] tracking-[0.2em] uppercase text-[var(--ink-2)]">
+              Available for work
+            </span> */}
+          </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="mt-6 text-gray-100 max-w-2xl text-center"
-        >
-          I lead systems spanning HR, fleet, accounting, AI, and process automation — reducing effort and time by 60%+ across functions.
-        </motion.p>
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.15, ease: [0.16,1,0.3,1] }}
+            className="font-[family-name:var(--font-display)] text-[clamp(3rem,8vw,7rem)] leading-[0.97] tracking-[-0.03em] text-[var(--ink)] mb-4"
+          >
+            Enterprise
+            <br />
+            Software
+            <br />
+            <em className="text-[var(--ink-2)] italic">Engineer</em>
+          </motion.h1>
 
+          {/* Typed sub-role */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="font-[family-name:var(--font-mono)] text-[clamp(0.85rem,2vw,1.1rem)] tracking-[0.06em] mb-10 h-7"
+          >
+            <TypedRole />
+          </motion.div>
+
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="text-[var(--ink-2)] text-base leading-relaxed max-w-[44ch] mb-12 border-l-2 border-[var(--acid)] pl-4"
+          >
+            I build high-resilience enterprise systems spanning HR, fleet,
+            accounting, AI, and process automation — reducing manual effort
+            by 60%+ across organisations.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.85 }}
+            className="flex flex-wrap items-center gap-4"
+          >
+            <Link
+              href="#projects"
+              data-cursor="explore"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--acid)] text-[#080808] font-[family-name:var(--font-mono)] text-[0.68rem] tracking-[0.14em] uppercase font-medium hover:shadow-[0_0_24px_var(--glow)] transition-all duration-300"
+            >
+              View Work
+              <span aria-hidden="true">→</span>
+            </Link>
+            <Link
+              href="#contact"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--border-2)] text-[var(--ink-2)] font-[family-name:var(--font-mono)] text-[0.68rem] tracking-[0.14em] uppercase hover:border-[var(--acid)] hover:text-[var(--acid)] transition-all duration-200"
+            >
+              Contact
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Right: stats column */}
         <motion.div
-          ref={titleRef}
-          whileHover={{ scale: 1.035 }}
-          className="mt-10"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="hidden lg:flex flex-col justify-center gap-0 border-l border-[var(--border)] h-full min-h-[calc(100vh-4rem)] w-56 shrink-0"
         >
-          <a href="#projects" className="px-6 py-3 rounded-full glass inline-block font-semibold text-white">
-            Explore my work
-          </a>
+          {[
+            { num: "60%+", label: "Efficiency gain", sub: "across all deployments" },
+            { num: "9",    label: "Products shipped", sub: "enterprise & consumer" },
+            { num: "2",    label: "Ventures founded", sub: "Zuribyte & beyond" },
+            { num: "5+",   label: "Years experience", sub: "in enterprise software" },
+          ].map((s, i) => (
+            <div key={i} className="px-8 py-8 border-b border-[var(--border)] last:border-b-0">
+              <p className="font-[family-name:var(--font-display)] text-[2.4rem] leading-none tracking-[-0.04em] text-[var(--ink)] mb-1">
+                {s.num}
+              </p>
+              <p className="font-[family-name:var(--font-mono)] text-[0.62rem] tracking-[0.12em] uppercase text-[var(--acid)] mb-0.5">
+                {s.label}
+              </p>
+              <p className="font-[family-name:var(--font-mono)] text-[0.58rem] text-[var(--ink-3)]">
+                {s.sub}
+              </p>
+            </div>
+          ))}
         </motion.div>
-      </div>
+      </motion.div>
 
-      {/* subtle radial overlays */}
-      <div className="pointer-events-none absolute inset-0 mix-blend-screen opacity-30">
-        <div className="absolute -left-40 -top-24 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-purple-700 to-transparent blur-3xl opacity-40"></div>
-        <div className="absolute -right-40 -bottom-24 w-[500px] h-[500px] rounded-full bg-gradient-to-bl from-pink-600 to-transparent blur-3xl opacity-30"></div>
+      {/* Marquee strip */}
+      <div className="relative z-10 h-10 border-t border-[var(--border)] overflow-hidden flex items-center bg-[var(--bg-2)]" aria-hidden="true">
+        <div className="flex gap-8 whitespace-nowrap" style={{ animation: "marquee 28s linear infinite" }}>
+          {[...ITEMS, ...ITEMS].map((item, i) => (
+            <span key={i} className="font-[family-name:var(--font-mono)] text-[0.6rem] tracking-[0.18em] uppercase text-[var(--ink-3)] shrink-0">
+              <span className="text-[var(--acid)] mr-2">◆</span>
+              {item}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );

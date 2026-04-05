@@ -1,0 +1,43 @@
+# Kelvin Maina — Portfolio
+
+> Kelvin Maina is an Enterprise Software Engineer and Co-Founder based in Croatia/Kenya.
+
+## About
+
+Kelvin Maina is a seasoned software architect and engineer focused on building high-resilience, enterprise-grade systems. He is currently employed at Tokić (Croatia) and is co-founder of Zuribyte.
+
+His work consistently reduces manual workload and processing times by over 60%, enabling teams to scale with fewer resources.
+
+## Skills
+
+- Enterprise Architecture and System Design
+- Business Process Automation and RPA
+- AI / ML document processing and OCR pipelines
+- DevOps: Jenkins, Docker, Nginx, GitHub Actions
+- Backend: Python, Django, REST APIs, Microservices
+- Frontend: Next.js, React, TypeScript, Tailwind CSS
+- Databases: PostgreSQL, MySQL, Redis
+- Cloud: Azure
+- Version control: Git, GitHub
+
+## Projects at Tokić
+
+- **Travel Management Web App** — Full-stack system for employee business travel requests, approvals, and reporting.
+- **Ticketing System (ACC & Fleet)** — Issue tracking and fleet operations management for Croatian operations.
+- **Payroll Management System** — Automated HR payroll with accounting integrations and compliance reporting.
+- **Employee Onboarding System** — End-to-end HR workflows with identity and access management provisioning.
+- **AI Document Routing** — OCR pipeline integrated with DMS for intelligent document classification and routing.
+- **RPA Scripts & Automations** — Robotic process automation for admin and finance tasks, reducing effort by 60%+.
+
+## Projects at Zuribyte
+
+- **Kuanasi** — Luxury fashion brand and e-commerce storefront in Belgium.
+- **Dobroafrica** — Cross-border fashion e-tail platform for the Croatian market.
+- **Olailepomara** — Tourism platform connecting travellers with experiences across Kenya.
+
+## Contact
+
+- Email: kelvinmaina547@gmail.com
+- LinkedIn: https://www.linkedin.com/in/kelvin-maina-ke-hr/
+- GitHub: https://github.com/KMaina-N
+- Website: https://kelvinmaina.dev
