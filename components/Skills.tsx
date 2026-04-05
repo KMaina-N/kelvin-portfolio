@@ -53,13 +53,16 @@ function SkillRow({ name, level, index }: { name: string; level: number; index: 
       <div className="flex items-center gap-3 shrink-0">
         <div className="w-28 h-[2px] bg-[var(--border)] relative overflow-hidden rounded-full">
           <motion.div
-            className="absolute inset-y-0 left-0 rounded-full"
-            style={{ background: "var(--acid)", boxShadow: "0 0 8px var(--glow)" }}
-            initial={{ scaleX: 0 }}
-            animate={inView ? { scaleX: level / 100 } : { scaleX: 0 }}
-            transition={{ duration: 1.1, delay: 0.1 + index * 0.04, ease: [0.16,1,0.3,1] }}
-            style={{ transformOrigin: "left", background: "var(--acid)" }}
-          />
+  className="absolute inset-y-0 left-0 rounded-full"
+  style={{
+    transformOrigin: "left",
+    background: "var(--acid)",
+    boxShadow: "0 0 8px var(--glow)",
+  }}
+  initial={{ scaleX: 0 }}
+  animate={inView ? { scaleX: level / 100 } : { scaleX: 0 }}
+  transition={{ duration: 1.1, delay: 0.1 + index * 0.04, ease: [0.16, 1, 0.3, 1] }}
+/>
         </div>
         <span className="font-[family-name:var(--font-mono)] text-[0.62rem] text-[var(--ink-3)] w-8 text-right">
           {level}%

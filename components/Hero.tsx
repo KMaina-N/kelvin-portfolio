@@ -65,7 +65,7 @@ export default function Hero() {
         aria-hidden="true"
       /> */}
 
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none">
+      {/* <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none">
       <Image
           src="/me.png"
           alt="Gradient Orb"
@@ -75,7 +75,7 @@ export default function Hero() {
           width={1800}
           height={1800}
         />
-      </div>
+      </div> */}
 
       {/* Scanline */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
