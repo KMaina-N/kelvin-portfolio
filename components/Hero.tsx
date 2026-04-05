@@ -59,11 +59,11 @@ export default function Hero() {
       <div className="absolute inset-0 dot-grid opacity-60" aria-hidden="true" />
 
       {/* Gradient orb */}
-      {/* <div
+      <div
         className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, var(--acid-dim) 0%, transparent 70%)" }}
         aria-hidden="true"
-      /> */}
+      />
 
       {/* <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none">
       <Image
